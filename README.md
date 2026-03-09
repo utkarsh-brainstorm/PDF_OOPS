@@ -8,23 +8,24 @@ PDF_OOPS is a tool to combine images into PDFs and make large PDFs smaller in fi
 
 To use this tool without setting up Python:
 1. Go to the [Releases](../../releases) page.
-2. Download the version for your computer.
-3. Run the downloaded file.
+2. Download the `PDF_OOPS` Linux executable file.
+3. Open your terminal, make it executable (`chmod +x PDF_OOPS`), and run it (`./PDF_OOPS`).
 
 ## Features & Instructions
 
-Run the tool and follow the on-screen prompts. You will be asked to drag and drop your image folder or PDF file.
+Run the tool and it will ask you to drop your folder or file. It has two main tools inside based on what you run:
 
-### 1. Make PDF from Images
-Combines a folder of images into one PDF.
-* **Relative Size:** Keeps the original size of each image. Type `0`.
-* **Continuous Width:** Makes all images the exact same width. Type `1`.
-* **Quality:** Choose a number from 0 to 100 to set image quality (100 is best).
+### 1. Make PDF from Images (IMG2PDF Mode)
+Combines a whole folder of images into one PDF. Drop your folder and it will ask you:
+* **Quality Setting:** Type a number from 0 to 100 to set how good the images look (100 is best, but biggest file size).
+* **Relative Size (Type `0`):** Keeps every image exactly its original size.
+* **Continuous Width (Type `1`):** Makes all images exactly the same width. If you choose this, it will ask you to type the exact width you want in pixels.
+* **Compress PDF:** After making the PDF, it will ask if you want to squish it to make it even smaller. Type `y` for yes or `n` for no.
 
-### 2. Compress PDF
-Makes large PDF files smaller.
-* **Basic Compression:** Squishes the whole PDF to make the file size smaller.
-* **Smart Text Compression:** Makes images smaller but keeps text sharp and selectable. Choose Light (1), Medium (2), or Heavy (3) compression.
+### 2. Compress Existing PDF (PDF Beast Mode)
+Makes large PDF files smaller. Drop your PDF file and it will do its magic:
+* **Basic Compression:** It will ask you for a width in pixels and a quality number (1-100) to squish the whole PDF down.
+* **Smart Text Compression:** Makes heavy images smaller but keeps all your text completely untouched and copyable. You just type `1` for Light compression, `2` for Medium, or `3` for Heavy compression.
 
 ## Running from Source (For Developers)
 
