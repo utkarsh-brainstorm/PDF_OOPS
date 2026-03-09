@@ -1,0 +1,66 @@
+name: Build and Release Executables
+
+on:
+  push:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+        
+    - name: Build executable
+      run: pyinstaller --onefile PDF_OOPS.py
+
+    - name: Rename executable (Windows)
+      if: matrix.os == 'windows-latest'
+      run: Rename-Item -Path "dist/PDF_OOPS.exe" -NewName "PDF_OOPS-windows.exe"
+
+    - name: Rename executable (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: mv dist/PDF_OOPS dist/PDF_OOPS-linux
+
+    - name: Rename executable (macOS)
+      if: matrix.os == 'macos-latest'
+      run: mv dist/PDF_OOPS dist/PDF_OOPS-macos
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: executable-${{ matrix.os }}
+        path: |
+          dist/PDF_OOPS-linux
+          dist/PDF_OOPS-macos
+          dist/PDF_OOPS-windows.exe
+
+    - name: Upload to Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: "v1.0.1"
+        name: "Cross-Platform Release"
+        files: |
+          dist/PDF_OOPS-linux
+          dist/PDF_OOPS-macos
+          dist/PDF_OOPS-windows.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
